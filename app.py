@@ -10,6 +10,7 @@ from sklearn.linear_model import SGDClassifier
 
 
 # --------- TITLE ----------
+st.markdown("---")
 st.title("NLP Model Deployment App 🚀")
 st.write("Clasificación de texto usando dataset 20 Newsgroups")
 
@@ -62,3 +63,5 @@ if st.button("Clasificar texto"):
     # Mostrar resultado
     st.success("Categoría predicha:")
     st.write(train_data.target_names[prediction[0]])
+    st.markdown("---")
+    st.caption("App creada con Streamlit • NLP Deployment • MDC AI")
