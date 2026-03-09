@@ -9,25 +9,32 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.linear_model import SGDClassifier
 
 
-st.title("NLP Model Deployment App")
-
+# --------- TITLE ----------
+st.title("NLP Model Deployment App 🚀")
 st.write("Clasificación de texto usando dataset 20 Newsgroups")
 
+
+# --------- SIDEBAR ----------
 st.sidebar.title("Opciones")
 
 methods = ["Naive Bayes", "SVM"]
 selected_method = st.sidebar.selectbox("Elige el modelo:", methods)
 
-if st.sidebar.button("Classify"):
 
-    st.write("## Resultados")
+# --------- INPUT TEXT ----------
+st.write("## ✍️ Escribe un texto para clasificar")
 
+user_text = st.text_area("Texto:", "This computer is fast and powerful")
+
+
+# --------- BUTTON ----------
+if st.button("Clasificar texto"):
+
+    # Cargar dataset
     train_data = fetch_20newsgroups(subset="train", shuffle=True)
-    test_data = fetch_20newsgroups(subset="test", shuffle=True)
 
+    # Pipeline según modelo
     if selected_method == "Naive Bayes":
-
-        st.write("Modelo seleccionado: Naive Bayes")
 
         pipeline = Pipeline([
             ("bow", CountVectorizer()),
@@ -36,8 +43,6 @@ if st.sidebar.button("Classify"):
         ])
 
     else:
-
-        st.write("Modelo seleccionado: SVM")
 
         pipeline = Pipeline([
             ("bow", CountVectorizer()),
@@ -48,10 +53,12 @@ if st.sidebar.button("Classify"):
                                          l1_ratio=0.17))
         ])
 
+    # Entrenar
     pipeline.fit(train_data.data, train_data.target)
 
-    predictions = pipeline.predict(test_data.data)
+    # Predecir texto del usuario
+    prediction = pipeline.predict([user_text])
 
-    accuracy = np.mean(predictions == test_data.target)
-
-    st.success(f"Accuracy: {accuracy:.4f}")
+    # Mostrar resultado
+    st.success("Categoría predicha:")
+    st.write(train_data.target_names[prediction[0]])
